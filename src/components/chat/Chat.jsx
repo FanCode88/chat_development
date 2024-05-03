@@ -21,6 +21,8 @@ const Chat = () => {
     file: null,
     url: '',
   });
+  const [isImageOpen, setIsImageOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState('');
 
   const { currentUser } = useUserStore();
   const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
@@ -110,6 +112,16 @@ const Chat = () => {
     setText('');
   };
 
+  const openImage = (imageUrl) => {
+    setCurrentImage(imageUrl);
+    setIsImageOpen(true);
+  };
+
+  const closeImage = () => {
+    setCurrentImage('');
+    setIsImageOpen(false);
+  };
+
   return (
     <div className='chat'>
       <div className='top'>
@@ -134,18 +146,17 @@ const Chat = () => {
             }
             key={message?.createdAt}
           >
-            <div className='text'>
-              {message.img && <img src={message.img} alt='' />}
+            <div className='text' onClick={() => openImage(message.img)}>
+              {message.img && <img src={message.img} alt='Message Image' />}
               <p>{message.text}</p>
-              {/* <span>{messages}</span> */}
             </div>
           </div>
         ))}
 
         {img.url && (
-          <div className='message own '>
-            <div className='text'>
-              <img src={img.url} alt='' />
+          <div className='message own'>
+            <div className='text' onClick={() => openImage(img.url)}>
+              <img src={img.url} alt='Uploaded Image' />
             </div>
           </div>
         )}
@@ -195,6 +206,17 @@ const Chat = () => {
           Send
         </button>
       </div>
+
+      {isImageOpen && (
+        <div className='modal' onClick={closeImage}>
+          <div className='modal-content'>
+            <span className='close' onClick={closeImage}>
+              &times;
+            </span>
+            <img src={currentImage} alt='Expanded Image' />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

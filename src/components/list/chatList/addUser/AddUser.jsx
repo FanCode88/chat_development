@@ -40,10 +40,6 @@ const AddUser = () => {
     }
   };
   const handleAdd = async () => {
-    // if (!user) {
-    //   console.log('Utilizatorul nu este definit.');
-    //   return;
-    // }
     const chatRef = collection(db, 'chats');
     const userChatRef = collection(db, 'userchats');
 
